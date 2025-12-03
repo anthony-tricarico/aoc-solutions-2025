@@ -3,7 +3,7 @@ from utils.parser import parse_input
 
 data: List = parse_input('data.txt')
 
-def find_solution(data: List[str]):
+def find_solution(data: List[str]) -> int:
     cur_num = 50
     cur_count = 0
     max_num = 100
