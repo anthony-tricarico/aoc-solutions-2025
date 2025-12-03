@@ -23,16 +23,31 @@ def determine_spins(cur_num: int) -> int:
     many times 0 has been crossed.
     """
     
-    # if cur_num is negative, then it means that
-    # the instruction (L) has crossed 0
-    if (cur_num < 0 or cur_num > 100) and (cur_num % 100 != 0):
-        # how many complete rotations touched 0?
-        # this will be the floor of cur_num
-        # divided by 100.
-        return math.floor(abs(cur_num/100))
-    elif (cur_num < 0 or cur_num > 100) and (cur_num % 100 == 0):
-        return math.floor(abs(cur_num/100)) - 1
+    # count the times it completed the move
+    # completing means it either went above
+    # 99 (starting from 0 again) or it went
+    # below zero
+    if cur_num > 99 or cur_num < 0:
+        # however, now we have to think about
+        # how to quantify the number of full
+        # spins around 0
+        first = abs(cur_num / 100) # determines how many (incomplete) spins were performed
+        # the abs is used since cur_num can be negative
+        # we only want to consider complete spins and so we
+        # provide a floor of this number
+        # problem is i cant floor every time
+        second = math.floor(first)
 
+        return second
+    
+    # return 0 if no spins have been performed
+    return 0
+
+def determine_sign_change(cur_num):
+    # if a sign changes then the operation must have crossed 0
+    if cur_num < 0 and abs(cur_num) < 100:
+        return 1
+    # otherwise return 0
     return 0
 
 def find_solution(data: List[str]) -> int:
@@ -47,16 +62,21 @@ def find_solution(data: List[str]) -> int:
             cur_num += int(entry[1:])
             print("intermediate cur num value in right ", cur_num)
             cur_count += determine_spins(cur_num)
+            cur_count += determine_sign_change(cur_num)
+            
+            # put the number in range
             cur_num = cur_num % max_num
         else:
             cur_num -= int(entry[1:])
             print("intermediate cur num value in left ", cur_num)
             cur_count += determine_spins(cur_num)
+            cur_count += determine_sign_change(cur_num)
+            # put the number in range
             cur_num = cur_num % max_num
 
         # check where it ended up after instruction
-        if cur_num == 0:
-            cur_count += 1
+        # if cur_num == 0:
+        #     cur_count += 1
 
         print("current number is ", cur_num)
         print("current count is ", cur_count)
@@ -64,6 +84,6 @@ def find_solution(data: List[str]) -> int:
 
 
 if __name__ == "__main__":
-    res = find_solution(test)
+    res = find_solution(data)
     print(res)
 
