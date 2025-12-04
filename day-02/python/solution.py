@@ -32,6 +32,34 @@ class Solution:
             if first_half == second_half:
                 self.invalid_ids.append(id)
 
+    def check_invalid_part_two(self, ids: List[int]):
+        """Appends invalid entries to list, according
+        to the criteria provided by the second part"""
+
+        for id in ids:
+            id_str = str(id)
+            str_len = len(id_str)
+            check = list()
+            for step_size in range(1, str_len):
+                # if str_len is a multiple of the current step size
+                if str_len % step_size == 0:
+                    check = list()
+                    # print("id is", id)
+                    first_part = id_str[:step_size]
+                    j = step_size
+                    while j <= str_len - step_size:
+                        second_part = id_str[j:j+step_size]
+                        # print("debug: comparing", first_part, second_part)
+                        check.append(first_part == second_part)
+                        # print("debug: check is", check)
+                        j += step_size
+
+                if all(check):
+                    self.invalid_ids.append(id)
+                    break
+
+
+
     def solve_part_one(self):
         self.read_data('data.txt')
 
@@ -43,6 +71,16 @@ class Solution:
         print("Solution to part 1 is", sum(self.invalid_ids))
 
 
+    def solve_part_two(self):
+        self.read_data('data.txt')
+
+        for r in self.data:
+            # range list as list of ints
+            int_r = self.generate_ranges(r)
+            self.check_invalid_part_two(int_r)
+
+        # print(self.invalid_ids)
+        print("Solution to part 2 is", sum(self.invalid_ids))
 
 if __name__ == "__main__":
     solution = Solution()
@@ -50,6 +88,7 @@ if __name__ == "__main__":
     # # print(solution.data)
     # ranges = solution.generate_ranges(solution.data[0])
     # print(ranges)
-    solution.solve_part_one()
+    # solution.solve_part_one()
+    solution.solve_part_two()
 
 
