@@ -15,6 +15,7 @@ from typing import List
 class Solution:
     def __init__(self) -> None:
         self.joltages = list()
+        self.data = None
 
 
     def read_data(self, path: str):
@@ -54,9 +55,13 @@ class Solution:
         res = sum(list(map(lambda x: int(x), self.joltages)))
         print("The solution to the first part is", res)
 
+    def solve_second_part(self):
+        if not self.data:
+            self.read_data("../test.txt")
 
-                
+        ...
 
 if __name__ == "__main__":
     solution = Solution()
-    solution.solve_first_part()
+    # solution.solve_first_part()
+    solution.solve_second_part()
